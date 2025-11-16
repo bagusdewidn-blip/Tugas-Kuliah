@@ -1,2 +1,0 @@
-# eradigital
-tugas 2
