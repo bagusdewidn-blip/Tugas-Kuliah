@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Adminduk C-A-K-A-P (Master Version)</title>
+    <title>Adminduk C-A-K-A-P (Custom Foto & Logo)</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -11,8 +11,8 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
-    <!-- Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Inter & Share Tech Mono -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
@@ -25,33 +25,41 @@
 
         @keyframes slide-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
         .animate-slide-up { animation: slide-up 0.3s ease-out forwards; }
+
+        @keyframes slide-down-toast { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .toast-enter { animation: slide-down-toast 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         
-        /* Holographic effect for IKD */
-        .holo-card {
-            background: linear-gradient(135deg, #4f46e5 0%, #818cf8 50%, #c084fc 100%);
+        /* Clean Gradient for Card */
+        .clean-card {
+            background: linear-gradient(130deg, #4f46e5 0%, #7c3aed 50%, #db2777 100%);
             position: relative;
             overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.3), 0 10px 10px -5px rgba(79, 70, 229, 0.2);
         }
-        .holo-card::before {
-            content: '';
+        .clean-card::after {
+            content: "";
             position: absolute;
-            top: 0; left: -50%; width: 200%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
-            transform: skewX(-25deg);
-            animation: shine 6s infinite;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            opacity: 0.4;
+            mix-blend-mode: overlay;
+            pointer-events: none;
         }
-        @keyframes shine { 0% { left: -50%; } 20% { left: 100%; } 100% { left: 100%; } }
     </style>
 </head>
 <body class="flex justify-center min-h-screen">
 
+    <!-- TOAST CONTAINER -->
+    <div id="toast-container" class="fixed top-4 left-0 right-0 z-[60] flex flex-col items-center gap-2 pointer-events-none px-4"></div>
+
     <!-- MOBILE CONTAINER -->
     <div id="app-container" class="w-full max-w-md bg-white min-h-screen shadow-2xl relative overflow-hidden flex flex-col">
         
-        <!-- 1. SPLASH SCREEN -->
+        <!-- 1. SPLASH SCREEN (LOGO APLIKASI DI SINI) -->
         <div id="splash-screen" class="absolute inset-0 z-50 bg-indigo-600 flex flex-col items-center justify-center text-white transition-opacity duration-500">
-            <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mb-4 shadow-lg animate-bounce">
-                <i data-lucide="shield-check" class="w-12 h-12 text-indigo-600"></i>
+            <div class="w-28 h-28 bg-white rounded-full flex items-center justify-center mb-4 shadow-lg animate-bounce p-4">
+                <!-- GANTI SRC DI BAWAH INI UNTUK MENGUBAH LOGO APLIKASI -->
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Lambang_Pancasila.svg/600px-Lambang_Pancasila.svg.png" alt="Logo Aplikasi" class="w-full h-full object-contain">
             </div>
             <h1 class="text-3xl font-bold tracking-widest">C-A-K-A-P</h1>
             <p class="text-indigo-200 text-sm mt-2">Cepat • Akuntabel • Kolaboratif • Adaptif • Proaktif</p>
@@ -60,11 +68,12 @@
         <!-- 2. AUTH SCREENS -->
         <div id="auth-screen" class="hidden flex-1 p-6 flex flex-col justify-center bg-white">
             <div class="text-center mb-8">
+                <!-- Logo Kecil di Halaman Login -->
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Lambang_Pancasila.svg/600px-Lambang_Pancasila.svg.png" class="w-16 mx-auto mb-4 opacity-80">
                 <h2 class="text-2xl font-bold text-gray-800">Selamat Datang</h2>
                 <p class="text-gray-500">Silakan masuk untuk mengakses layanan.</p>
             </div>
 
-            <!-- Login Form -->
             <div id="login-form" class="space-y-4">
                 <div>
                     <label class="block text-xs font-bold text-gray-600 mb-1">NIK (Nomor Induk Kependudukan)</label>
@@ -74,42 +83,34 @@
                     <label class="block text-xs font-bold text-gray-600 mb-1">Password</label>
                     <input type="password" id="login-pass" value="admin123" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition" placeholder="Kata sandi">
                 </div>
-                <button onclick="handleLogin()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-indigo-700 transition transform active:scale-95">
-                    MASUK
-                </button>
-                <p class="text-center text-sm text-gray-500 mt-4">
-                    Belum punya akun? <span onclick="toggleAuthMode('register')" class="text-indigo-600 font-bold cursor-pointer">Daftar Sekarang</span>
-                </p>
+                <button onclick="handleLogin()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-indigo-700 transition transform active:scale-95">MASUK</button>
+                <p class="text-center text-sm text-gray-500 mt-4">Belum punya akun? <span onclick="toggleAuthMode('register')" class="text-indigo-600 font-bold cursor-pointer">Daftar Sekarang</span></p>
             </div>
 
-            <!-- Register Form -->
             <div id="register-form" class="hidden space-y-3 overflow-y-auto max-h-[80vh] no-scrollbar pb-10">
                 <h3 class="font-bold text-indigo-600">Data Diri</h3>
                 <input type="text" class="w-full p-3 bg-gray-50 rounded-lg border text-sm" placeholder="Nama Lengkap">
                 <input type="number" class="w-full p-3 bg-gray-50 rounded-lg border text-sm" placeholder="NIK">
-                <input type="number" class="w-full p-3 bg-gray-50 rounded-lg border text-sm" placeholder="No. Kartu Keluarga">
+                <input type="number" class="w-full p-3 bg-gray-50 rounded-lg border text-sm" placeholder="No. HP (WhatsApp)">
                 <button onclick="handleRegister()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl mt-4">DAFTAR AKUN</button>
-                <p class="text-center text-sm text-gray-500 mt-2 mb-4">
-                    Sudah punya akun? <span onclick="toggleAuthMode('login')" class="text-indigo-600 font-bold cursor-pointer">Login</span>
-                </p>
+                <p class="text-center text-sm text-gray-500 mt-2 mb-4">Sudah punya akun? <span onclick="toggleAuthMode('login')" class="text-indigo-600 font-bold cursor-pointer">Login</span></p>
             </div>
         </div>
 
         <!-- 3. MAIN APP CONTENT -->
         <div id="main-content" class="hidden flex-1 flex flex-col relative bg-gray-50 overflow-hidden">
-            
             <!-- TOP BAR -->
             <header class="bg-white p-4 shadow-sm sticky top-0 z-20 flex justify-between items-center">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-bold">
-                        <i data-lucide="user" class="w-5 h-5"></i>
+                    <div class="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center border border-indigo-100 overflow-hidden">
+                        <!-- Avatar User Kecil -->
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-full h-full object-cover">
                     </div>
                     <div>
                         <p class="text-xs text-gray-500">Halo, Warga</p>
                         <h3 id="header-username" class="font-bold text-gray-800 leading-none">Nama Pengguna</h3>
                     </div>
                 </div>
-                <!-- Notification Button -->
                 <button onclick="toggleNotifications()" class="p-2 hover:bg-gray-100 rounded-full relative transition">
                     <i data-lucide="bell" class="w-6 h-6 text-gray-600"></i>
                     <span id="notif-badge" class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white animate-pulse hidden"></span>
@@ -117,9 +118,7 @@
             </header>
 
             <!-- SCROLLABLE CONTENT AREA -->
-            <main id="page-content" class="flex-1 overflow-y-auto p-4 pb-24 no-scrollbar">
-                <!-- Content injected via JS -->
-            </main>
+            <main id="page-content" class="flex-1 overflow-y-auto p-4 pb-24 no-scrollbar"></main>
 
             <!-- BOTTOM NAVIGATION -->
             <nav class="bg-white border-t border-gray-200 absolute bottom-0 w-full flex justify-around py-3 px-2 pb-5 z-30 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
@@ -132,305 +131,172 @@
                 <button onclick="switchTab('profile')" class="nav-btn text-gray-400" data-target="profile"><i data-lucide="user-cog" class="w-6 h-6"></i><span class="text-[10px] font-bold">Profil</span></button>
             </nav>
 
-            <!-- 4. NOTIFICATION MODAL (POPUP) -->
+            <!-- 4. MODALS (Notification & Schedule) -->
             <div id="notif-modal" class="absolute inset-0 bg-black/50 z-50 hidden flex items-end transition-opacity duration-300">
                 <div class="bg-white w-full rounded-t-2xl max-h-[70vh] overflow-y-auto animate-slide-up shadow-2xl">
                     <div class="p-4 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white z-10">
                         <h3 class="font-bold text-lg text-gray-800">Notifikasi</h3>
                         <button onclick="toggleNotifications()" class="p-1 bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200"><i data-lucide="x" class="w-5 h-5"></i></button>
                     </div>
-                    <div id="notif-list" class="p-4 space-y-3 pb-10">
-                        <!-- Notif items injected via JS -->
-                    </div>
+                    <div id="notif-list" class="p-4 space-y-3 pb-10"></div>
                     <div class="p-4 border-t border-gray-100 text-center">
                         <button onclick="markAllRead()" class="text-xs font-bold text-indigo-600 uppercase tracking-wide">Tandai Semua Dibaca</button>
                     </div>
                 </div>
             </div>
 
+            <div id="schedule-modal" class="absolute inset-0 bg-black/50 z-50 hidden flex items-center justify-center px-4 transition-opacity duration-300">
+                <div class="bg-white w-full max-w-sm rounded-2xl animate-slide-up shadow-2xl overflow-hidden">
+                    <div class="bg-indigo-600 p-4 text-white text-center">
+                        <i data-lucide="calendar-clock" class="w-8 h-8 mx-auto mb-2"></i>
+                        <h3 class="font-bold text-lg">Pilih Jadwal Perekaman</h3>
+                        <p class="text-xs text-indigo-200">Perekaman Biometrik</p>
+                    </div>
+                    <div class="p-5 space-y-4">
+                        <div><label class="block text-xs font-bold text-gray-600 mb-1">Lokasi</label><select id="sched-loc" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none"><option>Kantor Dinas Dukcapil Pusat</option><option>Kecamatan Sukarame</option><option>Mall Pelayanan Publik</option></select></div>
+                        <div class="grid grid-cols-2 gap-3"><div><label class="block text-xs font-bold text-gray-600 mb-1">Tanggal</label><input type="date" id="sched-date" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none"></div><div><label class="block text-xs font-bold text-gray-600 mb-1">Waktu</label><select id="sched-time" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none"><option>08:00 - 09:00</option><option>09:00 - 10:00</option><option>13:00 - 14:00</option></select></div></div>
+                        <button onclick="submitSchedule()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl shadow-lg active:scale-95 transition">KONFIRMASI</button>
+                        <button onclick="closeScheduleModal()" class="w-full text-gray-500 text-xs font-semibold py-2">Batal</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // --- 1. DATABASE "MOCK" ---
         const mockDB = {
-            users: [{ nik: "1234567890123456", password: "admin123", name: "Sefti Indriyani", kk: "3201000000000001", address: "Jl. Mawar No. 10, Bandar Lampung" }],
-            // Default kosong agar User bisa menekan tombol Simulasi
+            users: [{ nik: "1234567890123456", password: "admin123", name: "SEFTI INDRIYANI", phone: "08123456789", address: "Jl. Mawar No. 10, Bandar Lampung" }],
             tracking: [], 
             services: [
                 { id: 'ktp', name: "Buat E-KTP", icon: "id-card", bg: "bg-blue-100", color: "text-blue-600" },
                 { id: 'kk', name: "Kartu Keluarga", icon: "users", bg: "bg-green-100", color: "text-green-600" },
                 { id: 'pindah', name: "Surat Pindah", icon: "truck", bg: "bg-orange-100", color: "text-orange-600" },
                 { id: 'akta', name: "Akta Lahir", icon: "baby", bg: "bg-pink-100", color: "text-pink-600" },
-                { id: 'kia', name: "Kartu Anak (KIA)", icon: "smile", bg: "bg-purple-100", color: "text-purple-600" },
-                { id: 'mati', name: "Akta Kematian", icon: "file-minus", bg: "bg-gray-200", color: "text-gray-600" },
             ],
-            notifications: [
-                { id: 1, title: "Pengingat IKD (Proaktif)", message: "Hindari kelangkaan blanko! Segera aktifkan Identitas Kependudukan Digital Anda sekarang.", time: "Baru saja", type: "alert", read: false },
-                { id: 3, title: "Selamat Datang", message: "Selamat datang di aplikasi C-A-K-A-P.", time: "1 hari yang lalu", type: "info", read: true }
-            ]
+            notifications: [{ id: 1, title: "Selamat Datang", message: "Selamat datang di aplikasi C-A-K-A-P.", time: "1 hari yang lalu", type: "info", read: true }]
         };
 
         let currentUser = null;
         let activeTab = 'home';
+        let currentRegIdForSchedule = null;
 
-        // --- 2. LOGIKA UTAMA ---
-        window.onload = () => {
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            let bgClass = type === 'success' ? 'bg-green-600' : type === 'wa' ? 'bg-[#25D366]' : 'bg-gray-800';
+            let icon = type === 'success' ? 'check-circle' : type === 'wa' ? 'message-circle' : 'info';
+            toast.className = `toast-enter flex items-center gap-3 px-4 py-3 rounded-lg shadow-xl text-white text-sm font-medium ${bgClass} w-full max-w-sm transform transition-all duration-300 pointer-events-auto`;
+            toast.innerHTML = `<i data-lucide="${icon}" class="w-5 h-5 flex-shrink-0"></i><span>${message}</span>`;
+            container.appendChild(toast);
             lucide.createIcons();
-            setTimeout(() => {
-                document.getElementById('splash-screen').classList.add('opacity-0');
-                setTimeout(() => {
-                    document.getElementById('splash-screen').style.display = 'none';
-                    document.getElementById('auth-screen').classList.remove('hidden');
-                }, 500);
-            }, 2000);
-        };
-
-        function toggleAuthMode(mode) {
-            if(mode === 'register') {
-                document.getElementById('login-form').classList.add('hidden');
-                document.getElementById('register-form').classList.remove('hidden');
-            } else {
-                document.getElementById('login-form').classList.remove('hidden');
-                document.getElementById('register-form').classList.add('hidden');
-            }
+            setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateY(-20px)'; setTimeout(() => toast.remove(), 300); }, 4000);
         }
 
-        function handleLogin() {
-            const nik = document.getElementById('login-nik').value;
-            const pass = document.getElementById('login-pass').value;
-            const user = mockDB.users.find(u => u.nik === nik && u.password === pass);
+        window.onload = () => {
+            lucide.createIcons();
+            setTimeout(() => { document.getElementById('splash-screen').classList.add('opacity-0'); setTimeout(() => { document.getElementById('splash-screen').style.display = 'none'; document.getElementById('auth-screen').classList.remove('hidden'); }, 500); }, 2000);
+        };
 
+        function handleLogin() {
+            const user = mockDB.users.find(u => u.nik === document.getElementById('login-nik').value && u.password === document.getElementById('login-pass').value);
             if (user) {
                 currentUser = user;
                 document.getElementById('auth-screen').classList.add('hidden');
                 document.getElementById('main-content').classList.remove('hidden');
                 document.getElementById('header-username').textContent = user.name;
-                updateNotifBadge();
                 renderPage('home');
-            } else {
-                alert("Gunakan NIK: 1234567890123456 dan Pass: admin123");
-            }
-        }
-
-        function handleRegister() {
-            alert("Registrasi Berhasil! Silakan Login.");
-            toggleAuthMode('login');
+                setTimeout(() => showToast(`Login Berhasil. Halo, ${user.name}!`, 'success'), 500);
+            } else { showToast("Gunakan NIK: 1234567890123456 dan Pass: admin123", 'info'); }
         }
 
         function switchTab(tabName) {
             activeTab = tabName;
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                const isTarget = btn.dataset.target === tabName;
-                btn.className = isTarget ? 'nav-btn text-indigo-600 flex flex-col items-center' : 'nav-btn text-gray-400 flex flex-col items-center';
-            });
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.className = btn.dataset.target === tabName ? 'nav-btn text-indigo-600 flex flex-col items-center' : 'nav-btn text-gray-400 flex flex-col items-center');
             renderPage(tabName);
         }
 
-        // --- 3. LOGIKA NOTIFIKASI ---
-        function toggleNotifications() {
-            const modal = document.getElementById('notif-modal');
-            const listContainer = document.getElementById('notif-list');
-            
-            if (modal.classList.contains('hidden')) {
-                modal.classList.remove('hidden');
-                listContainer.innerHTML = '';
-
-                if (mockDB.notifications.length === 0) {
-                    listContainer.innerHTML = '<p class="text-center text-gray-500 text-sm py-10">Tidak ada notifikasi.</p>';
-                } else {
-                    mockDB.notifications.forEach(notif => {
-                        let icon = notif.type === 'alert' ? 'smartphone' : notif.type === 'success' ? 'check-circle' : 'info';
-                        let bgClass = notif.type === 'alert' ? 'bg-yellow-100 text-yellow-600' : notif.type === 'success' ? 'bg-green-100 text-green-600' : 'bg-blue-100 text-blue-600';
-                        const isReadClass = notif.read ? 'opacity-60' : 'bg-indigo-50/50 border-l-4 border-indigo-500';
-
-                        listContainer.innerHTML += `
-                            <div class="flex gap-3 p-3 rounded-lg ${isReadClass} transition-colors">
-                                <div class="flex-shrink-0 w-10 h-10 ${bgClass} rounded-full flex items-center justify-center">
-                                    <i data-lucide="${icon}" class="w-5 h-5"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <div class="flex justify-between items-start">
-                                        <h4 class="text-sm font-bold text-gray-800">${notif.title}</h4>
-                                        <span class="text-[10px] text-gray-400 whitespace-nowrap ml-2">${notif.time}</span>
-                                    </div>
-                                    <p class="text-xs text-gray-600 mt-1 leading-relaxed">${notif.message}</p>
-                                </div>
-                            </div>`;
-                    });
-                }
-                lucide.createIcons();
-            } else {
-                modal.classList.add('hidden');
-            }
-        }
-
-        function updateNotifBadge() {
-            const unreadCount = mockDB.notifications.filter(n => !n.read).length;
-            const badge = document.getElementById('notif-badge');
-            if (unreadCount > 0) {
-                badge.classList.remove('hidden');
-            } else {
-                badge.classList.add('hidden');
-            }
-        }
-
-        function markAllRead() {
-            mockDB.notifications.forEach(n => n.read = true);
-            toggleNotifications(); 
-            updateNotifBadge();
-        }
-
-        // --- 4. SIMULASI PENGAJUAN (KEMBALI DIADAKAN) ---
-        function simulateNewRequest() {
-            const newReg = {
-                id: "REG-" + Math.floor(Math.random() * 10000),
-                userId: currentUser.nik,
-                service: "Pembuatan E-KTP Baru",
-                status: "PENCETAKAN",
-                updatedAt: new Date().toISOString(),
-                history: [
-                    { step: "Pengajuan Masuk", date: "Hari ini", done: true },
-                    { step: "Verifikasi Dokumen", date: "Baru saja", done: true },
-                    { step: "Perekaman Biometrik", date: "Terkonfirmasi", done: true },
-                    { step: "Antrian Pencetakan", date: "Sedang Proses", done: false },
-                    { step: "Selesai", date: null, done: false }
-                ]
-            };
-            
-            // Tambah ke Tracking
-            mockDB.tracking.unshift(newReg);
-            
-            // Tambah ke Notifikasi (Proaktif)
-            mockDB.notifications.unshift({ 
-                id: Date.now(), 
-                title: "Pengajuan Diterima", 
-                message: `Pengajuan Anda (${newReg.id}) telah diterima dan sedang diproses.`, 
-                time: "Baru saja", 
-                type: "success", 
-                read: false 
-            });
-            
-            alert("Simulasi Berhasil! Pengajuan baru telah dibuat.");
-            updateNotifBadge();
-            renderPage('home');
-        }
-
-        // --- 5. RENDER PAGE ---
         function renderPage(page) {
             const container = document.getElementById('page-content');
-            container.innerHTML = ''; 
-            window.scrollTo(0,0);
+            container.innerHTML = ''; window.scrollTo(0,0);
 
             if (page === 'home') {
-                const myTracking = mockDB.tracking[0]; // Ambil yang terbaru
-                let trackingHTML = '';
-
-                if (myTracking) {
-                    // Tampilan Jika Ada Tracking (Card Status)
-                    trackingHTML = `
-                    <div class="bg-white p-4 rounded-2xl shadow-md border border-gray-100 mb-6 animate-fade-in">
-                         <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <h4 class="font-bold text-gray-800 text-sm">Status Terkini</h4>
-                                <p class="text-xs text-gray-500">${myTracking.service}</p>
-                            </div>
-                            <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-[10px] font-bold animate-pulse">PROSES</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
-                            <div class="bg-indigo-600 h-2 rounded-full" style="width: 75%"></div>
-                        </div>
-                        <div class="flex justify-between text-xs text-gray-500">
-                            <span>${myTracking.id}</span>
-                            <span>Langkah 3 dari 4</span>
-                        </div>
-                        <button onclick="switchTab('tracking')" class="w-full mt-3 text-indigo-600 text-xs font-bold border border-indigo-100 py-2 rounded-lg hover:bg-indigo-50">Lihat Detail</button>
-                    </div>`;
-                } else {
-                    // Tampilan Jika KOSONG (Tombol Simulasi) - FITUR YANG SEMPAT HILANG
-                    trackingHTML = `
-                    <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-6 text-center mb-6 animate-fade-in">
-                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 text-indigo-600 shadow-sm">
-                            <i data-lucide="file-plus" class="w-6 h-6"></i>
-                        </div>
-                        <h4 class="font-bold text-gray-800 mb-1">Belum Ada Pengajuan</h4>
-                        <p class="text-xs text-gray-500 mb-4">Mulai layanan adminduk Anda sekarang secara digital.</p>
-                        <button onclick="simulateNewRequest()" class="bg-indigo-600 text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-lg hover:bg-indigo-700 transform active:scale-95 transition">
-                            + Simulasi Pengajuan Baru
-                        </button>
-                    </div>`;
-                }
-
-                container.innerHTML = `
-                    <!-- Info Banner -->
-                    <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl p-4 text-white mb-6 shadow-lg animate-fade-in">
-                        <p class="text-xs opacity-80 font-semibold mb-1">VISI C-A-K-A-P</p>
-                        <h2 class="font-bold text-lg leading-tight">Layanan Adminduk yang Proaktif & Digital</h2>
-                    </div>
-
-                    ${trackingHTML}
-
-                    <h3 class="font-bold text-gray-800 mb-3">Layanan Digital</h3>
-                    <div class="grid grid-cols-3 gap-3 mb-20">
-                        ${mockDB.services.map(s => `
-                            <div class="flex flex-col items-center p-3 bg-white rounded-xl shadow-sm border border-gray-100 active:scale-95 transition cursor-pointer" onclick="alert('Fitur ini akan membuka formulir: ${s.name}')">
-                                <div class="w-10 h-10 ${s.bg} rounded-full flex items-center justify-center mb-2">
-                                    <i data-lucide="${s.icon}" class="w-5 h-5 ${s.color}"></i>
-                                </div>
-                                <span class="text-[10px] font-bold text-gray-700 text-center">${s.name}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
+                const t = mockDB.tracking[0];
+                let statusHTML = t ? 
+                    `<div class="bg-white p-4 rounded-2xl shadow-md border border-gray-100 mb-6 animate-fade-in"><div class="flex justify-between items-start mb-2"><div><h4 class="font-bold text-gray-800 text-sm">Status Terkini</h4><p class="text-xs text-gray-500">${t.service}</p></div>${t.status==='MENUNGGU_JADWAL'?'<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-[10px] font-bold animate-pulse">BUTUH AKSI</span>':'<span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-[10px] font-bold">PROSES</span>'}</div><div class="w-full bg-gray-200 rounded-full h-2 mb-2"><div class="bg-indigo-600 h-2 rounded-full" style="width: 50%"></div></div>${t.status==='MENUNGGU_JADWAL'?`<button onclick="switchTab('tracking')" class="w-full bg-red-600 text-white text-xs font-bold py-2.5 rounded-lg hover:bg-red-700 shadow-lg animate-bounce">📅 Atur Jadwal Sekarang</button>`:`<button onclick="switchTab('tracking')" class="w-full text-indigo-600 text-xs font-bold border border-indigo-100 py-2 rounded-lg hover:bg-indigo-50">Lihat Detail</button>`}</div>` : 
+                    `<div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-6 text-center mb-6 animate-fade-in"><div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 text-indigo-600 shadow-sm"><i data-lucide="file-plus" class="w-6 h-6"></i></div><h4 class="font-bold text-gray-800 mb-1">Belum Ada Pengajuan</h4><p class="text-xs text-gray-500 mb-4">Mulai layanan adminduk Anda.</p><button onclick="simulateNewRequest()" class="bg-indigo-600 text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-lg hover:bg-indigo-700 transform active:scale-95 transition">+ Simulasi Pengajuan Baru</button></div>`;
+                container.innerHTML = `<div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl p-4 text-white mb-6 shadow-lg animate-fade-in"><p class="text-xs opacity-80 font-semibold mb-1">VISI C-A-K-A-P</p><h2 class="font-bold text-lg leading-tight">Layanan Adminduk yang Proaktif & Digital</h2></div>${statusHTML}<h3 class="font-bold text-gray-800 mb-3">Layanan Digital</h3><div class="grid grid-cols-3 gap-3 mb-20">${mockDB.services.map(s => `<div class="flex flex-col items-center p-3 bg-white rounded-xl shadow-sm border border-gray-100 active:scale-95 transition cursor-pointer" onclick="alert('Membuka: ${s.name}')"><div class="w-10 h-10 ${s.bg} rounded-full flex items-center justify-center mb-2"><i data-lucide="${s.icon}" class="w-5 h-5 ${s.color}"></i></div><span class="text-[10px] font-bold text-gray-700 text-center">${s.name}</span></div>`).join('')}</div>`;
+            
             } else if (page === 'tracking') {
                 const t = mockDB.tracking[0];
-                if (!t) {
-                    container.innerHTML = `<div class="text-center py-20 text-gray-400"><i data-lucide="search" class="w-12 h-12 mx-auto mb-2"></i><p>Belum ada data pelacakan.</p></div>`;
-                } else {
-                    const steps = t.history.map(h => `
-                        <div class="relative pl-6 pb-6 border-l-2 ${h.done ? 'border-green-500' : 'border-gray-200'} last:border-0">
-                            <div class="absolute -left-[5px] top-0 w-2.5 h-2.5 rounded-full ${h.done ? 'bg-green-500' : 'bg-gray-300'}"></div>
-                            <p class="text-xs font-bold ${h.done ? 'text-gray-800' : 'text-gray-400'}">${h.step}</p>
-                            <p class="text-[10px] text-gray-500">${h.date || ''}</p>
-                        </div>
-                    `).join('');
-                    container.innerHTML = `<div class="bg-white p-5 rounded-2xl shadow-sm"><h2 class="font-bold text-lg mb-4 text-indigo-600">Detail Pelacakan</h2>${steps}</div>`;
+                if (!t) { container.innerHTML = `<div class="text-center py-20 text-gray-400"><i data-lucide="search" class="w-12 h-12 mx-auto mb-2"></i><p>Belum ada data.</p></div>`; } 
+                else {
+                    let ticketHTML = (t.status === 'BIOMETRIK_TERJADWAL' && t.ticket) ? `<div class="bg-indigo-50 border border-indigo-200 rounded-xl p-4 mb-4 mt-2"><div class="flex justify-between border-b border-indigo-200 pb-2 mb-2"><div><p class="text-[10px] font-bold text-indigo-500">TIKET ANTRIAN</p><h3 class="text-xl font-bold text-indigo-700">${t.ticket.code}</h3></div><i data-lucide="qr-code" class="w-8 h-8 text-indigo-700"></i></div><div class="text-xs text-indigo-800"><p>${t.ticket.loc}</p><p>${t.ticket.date}, ${t.ticket.time}</p></div></div>` : '';
+                    container.innerHTML = `<div class="bg-white p-5 rounded-2xl shadow-sm"><h2 class="font-bold text-lg mb-1 text-indigo-600">Pelacakan</h2><p class="text-xs text-gray-500 mb-4">No: ${t.id}</p>${ticketHTML}<div class="mt-2">${t.history.map((h,i) => `<div class="relative pl-6 pb-6 border-l-2 ${h.done?'border-green-500':'border-gray-200'} last:border-0"><div class="absolute -left-[5px] top-0 w-2.5 h-2.5 rounded-full ${h.done?'bg-green-500':'bg-gray-300'}"></div><p class="text-xs font-bold ${h.done?'text-gray-800':'text-gray-400'}">${h.step}</p><p class="text-[10px] text-gray-500">${h.date||''}</p>${(i===2 && t.status==='MENUNGGU_JADWAL') ? `<button onclick="openScheduleModal('${t.id}')" class="mt-2 bg-indigo-600 text-white text-xs px-3 py-1.5 rounded shadow">Pilih Jadwal</button>` : ''}</div>`).join('')}</div></div>`;
                 }
+
             } else if (page === 'ikd') {
+                // --- KTP DIGITAL DENGAN FOTO CUSTOM & LAYOUT RAPI ---
+                // Perhatikan <img> src di bawah ini untuk Foto Profil IKD
                 container.innerHTML = `
-                    <h2 class="font-bold text-lg mb-4 text-indigo-600">KTP Digital (IKD)</h2>
-                    <div class="holo-card rounded-xl p-5 text-white shadow-lg mb-4">
-                        <div class="flex justify-between mb-6">
-                            <i data-lucide="shield" class="w-6 h-6 opacity-80"></i>
-                            <span class="text-[10px] border border-white/40 px-2 py-0.5 rounded">AKTIF</span>
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="font-bold text-lg text-indigo-600">KTP Digital (IKD)</h2>
+                        <span class="bg-green-100 text-green-600 px-2 py-1 rounded text-[10px] font-bold border border-green-200 animate-pulse">AKTIF</span>
+                    </div>
+                    <div class="w-full aspect-[1.58/1] rounded-2xl shadow-2xl overflow-hidden text-white clean-card p-4 flex flex-col relative">
+                        <div class="flex justify-between items-start mb-4 relative z-10">
+                            <div class="flex items-center gap-3">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Lambang_Pancasila.svg/1200px-Lambang_Pancasila.svg.png" class="w-8 drop-shadow-md">
+                                <div class="text-left">
+                                    <h2 class="font-bold text-sm tracking-widest leading-tight text-shadow-sm">REPUBLIK INDONESIA</h2>
+                                    <p class="text-[10px] tracking-widest opacity-90 font-medium">KTP DIGITAL</p>
+                                </div>
+                            </div>
+                            <div class="border border-white/50 rounded px-2 py-0.5 text-[9px] font-bold backdrop-blur-sm">IKD AKTIF</div>
                         </div>
-                        <h3 class="font-bold text-xl mb-1">${currentUser.name.toUpperCase()}</h3>
-                        <p class="font-mono text-sm opacity-80">${currentUser.nik}</p>
-                        <div class="mt-6 flex items-center justify-between border-t border-white/20 pt-3">
-                            <span class="text-[10px]">Berlaku Seumur Hidup</span>
-                            <i data-lucide="qr-code" class="w-6 h-6"></i>
+                        <div class="flex gap-4 items-center flex-1 relative z-10 px-1">
+                            <div class="w-20 aspect-[3/4] bg-gray-300/40 rounded-lg border-2 border-white/30 flex items-center justify-center backdrop-blur-sm shadow-inner overflow-hidden">
+                                <!-- GANTI SRC DI SINI UNTUK MENGUBAH FOTO IKD -->
+                                <img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-full h-full object-cover" alt="Foto IKD">
+                            </div>
+                            <div class="flex-1 min-w-0 space-y-1">
+                                <h3 class="font-bold text-lg leading-none truncate drop-shadow-md uppercase">${currentUser.name}</h3>
+                                <p class="font-mono text-xs opacity-90 tracking-wide">${currentUser.nik}</p>
+                                <p class="text-[9px] leading-tight opacity-80 truncate">${currentUser.address}</p>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-end mt-1 relative z-10">
+                            <p class="text-[8px] font-medium opacity-70">Berlaku Seumur Hidup</p>
+                            <div class="bg-white/20 p-1 rounded backdrop-blur-md"><i data-lucide="qr-code" class="w-8 h-8 text-white"></i></div>
                         </div>
                     </div>
-                    <p class="text-center text-xs text-gray-500">Tunjukkan QR Code ini kepada petugas.</p>
+                    <div class="mt-6 flex gap-3 justify-center">
+                        <button class="flex items-center gap-2 bg-white text-indigo-600 border border-indigo-100 px-5 py-2.5 rounded-full text-sm font-bold shadow">Perbesar QR</button>
+                        <button class="flex items-center gap-2 bg-indigo-600 text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-lg">Unduh KTP</button>
+                    </div>
                 `;
+
             } else if (page === 'profile') {
-                container.innerHTML = `
-                    <div class="bg-white p-6 rounded-2xl shadow-sm text-center mb-4 border border-gray-100">
-                        <div class="w-20 h-20 bg-indigo-100 rounded-full mx-auto flex items-center justify-center text-indigo-600 mb-3"><i data-lucide="user" class="w-10 h-10"></i></div>
-                        <h2 class="font-bold text-gray-800">${currentUser.name}</h2>
-                        <p class="text-sm text-gray-500">${currentUser.nik}</p>
-                    </div>
-                    <div class="bg-white rounded-xl border border-gray-100 overflow-hidden mb-6">
-                        <button class="w-full p-4 text-left text-sm flex justify-between items-center border-b border-gray-50 hover:bg-gray-50"><span>Pengaturan Akun</span><i data-lucide="chevron-right" class="w-4 h-4 text-gray-300"></i></button>
-                        <button class="w-full p-4 text-left text-sm flex justify-between items-center border-b border-gray-50 hover:bg-gray-50"><span>Bantuan & FAQ</span><i data-lucide="chevron-right" class="w-4 h-4 text-gray-300"></i></button>
-                        <button onclick="location.reload()" class="w-full p-4 text-left text-sm font-bold text-red-500 hover:bg-red-50 flex items-center gap-2"><i data-lucide="log-out" class="w-4 h-4"></i> Keluar Aplikasi</button>
-                    </div>
-                `;
-            } else if (page === 'layanan') {
-                renderPage('home');
+                container.innerHTML = `<div class="bg-white p-6 rounded-2xl shadow-sm text-center mb-4 border border-gray-100"><div class="w-20 h-20 bg-indigo-100 rounded-full mx-auto flex items-center justify-center text-indigo-600 mb-3 overflow-hidden"><img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-full h-full object-cover"></div><h2 class="font-bold text-gray-800">${currentUser.name}</h2><p class="text-sm text-gray-500">${currentUser.nik}</p></div><div class="bg-white rounded-xl border border-gray-100 overflow-hidden mb-6"><button onclick="location.reload()" class="w-full p-4 text-left text-sm font-bold text-red-500 hover:bg-red-50">Keluar Aplikasi</button></div>`;
             }
             lucide.createIcons();
+        }
+
+        // Helper functions
+        function toggleAuthMode(mode) { if(mode==='register'){ document.getElementById('login-form').classList.add('hidden'); document.getElementById('register-form').classList.remove('hidden'); } else { document.getElementById('login-form').classList.remove('hidden'); document.getElementById('register-form').classList.add('hidden'); } }
+        function toggleNotifications() { document.getElementById('notif-modal').classList.toggle('hidden'); }
+        function markAllRead() { document.getElementById('notif-badge').classList.add('hidden'); toggleNotifications(); }
+        function updateNotifBadge() { document.getElementById('notif-badge').classList.remove('hidden'); }
+        function closeScheduleModal() { document.getElementById('schedule-modal').classList.add('hidden'); }
+        function openScheduleModal(id) { currentRegIdForSchedule=id; document.getElementById('schedule-modal').classList.remove('hidden'); }
+        function submitSchedule() {
+            const t = mockDB.tracking.find(tr => tr.id === currentRegIdForSchedule);
+            if(t) { t.status = 'BIOMETRIK_TERJADWAL'; t.history[2].done = true; t.history[2].step = `Jadwal: ${document.getElementById('sched-date').value}`; t.ticket = { code: 'Q-123', loc: document.getElementById('sched-loc').value, date: document.getElementById('sched-date').value, time: document.getElementById('sched-time').value }; }
+            closeScheduleModal(); showToast('Jadwal Berhasil Disimpan', 'success'); setTimeout(() => showToast('Tiket dikirim ke WhatsApp', 'wa'), 1000); renderPage('tracking');
+        }
+        function simulateNewRequest() {
+            const id = "REG-" + Math.floor(Math.random()*10000);
+            mockDB.tracking.unshift({ id: id, service: "Pembuatan E-KTP Baru", status: "MENUNGGU_JADWAL", history: [{step:"Pengajuan", date:"Hari ini", done:true}, {step:"Verifikasi", date:"Baru saja", done:true}, {step:"Biometrik", date:"Menunggu Jadwal", done:false}, {step:"Cetak", date:"-", done:false}, {step:"Selesai", date:"-", done:false}] });
+            showToast("Pengajuan Diterima", 'info'); renderPage('tracking');
         }
     </script>
 </body>
