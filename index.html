@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Adminduk C-A-K-A-P </title>
+    <title>Adminduk C-A-K-A-P</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -11,13 +11,31 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
-    <!-- Font Inter & Share Tech Mono -->
+    <!-- Font Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; height: 100vh; height: 100dvh; overflow: hidden; display: flex; justify-content: center; }
-        
-        #app-container { height: 100%; width: 100%; max-width: 28rem; background-color: white; position: relative; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f3f4f6; 
+            height: 100vh; 
+            height: 100dvh; 
+            overflow: hidden; 
+            display: flex;
+            justify-content: center;
+        }
+
+        #app-container {
+            height: 100%;
+            width: 100%;
+            max-width: 28rem;
+            background-color: white;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -30,10 +48,7 @@
         @keyframes slide-down-toast { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .toast-enter { animation: slide-down-toast 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         
-        @keyframes scan-line { 0% { top: 0%; } 50% { top: 100%; } 100% { top: 0%; } }
-        .scanning-beam { position: absolute; width: 100%; height: 2px; background: #10b981; box-shadow: 0 0 4px #10b981, 0 0 8px #10b981; animation: scan-line 2s infinite linear; }
-
-        /* Clean Gradient for Card (Hanya Warna & Dekorasi, Posisi diatur di HTML) */
+        /* Clean Gradient & Scan */
         .clean-card {
             background: linear-gradient(130deg, #4f46e5 0%, #7c3aed 50%, #db2777 100%);
             box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.3), 0 10px 10px -5px rgba(79, 70, 229, 0.2);
@@ -43,8 +58,10 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
             opacity: 0.4; mix-blend-mode: overlay; pointer-events: none;
         }
+        @keyframes scan-line { 0% { top: 0%; } 50% { top: 100%; } 100% { top: 0%; } }
+        .scanning-beam { position: absolute; width: 100%; height: 2px; background: #10b981; box-shadow: 0 0 4px #10b981, 0 0 8px #10b981; animation: scan-line 2s infinite linear; }
 
-        /* 3D FLIP UTILITIES */
+        /* 3D Flip */
         .perspective-1000 { perspective: 1000px; }
         .transform-style-3d { transform-style: preserve-3d; }
         .rotate-y-180 { transform: rotateY(180deg); }
@@ -53,7 +70,7 @@
 </head>
 <body>
 
-    <div id="toast-container" class="fixed top-4 left-0 right-0 z-[60] flex flex-col items-center gap-2 pointer-events-none px-4"></div>
+    <div id="toast-container" class="fixed top-4 left-0 right-0 z-[100] flex flex-col items-center gap-2 pointer-events-none px-4"></div>
 
     <div id="app-container">
         <!-- 1. SPLASH SCREEN -->
@@ -65,7 +82,7 @@
             <p class="text-indigo-200 text-sm mt-2">Cepat • Akuntabel • Kolaboratif • Adaptif • Proaktif</p>
         </div>
 
-        <!-- 2. AUTH SCREENS -->
+        <!-- 2. AUTH SCREEN -->
         <div id="auth-screen" class="hidden flex-1 p-6 flex flex-col justify-center bg-white h-full overflow-y-auto">
             <div class="text-center mb-8">
                 <img src="https://raw.githubusercontent.com/bagusdewidn-blip/Tugas-Kuliah/refs/heads/main/Garuda_Pancasila%2C_Coat_of_Arms_of_Indonesia.svg.png" class="w-16 mx-auto mb-4 opacity-80">
@@ -88,7 +105,11 @@
                     </div>
                     <div><p class="text-xs text-gray-500">Halo, Warga</p><h3 id="header-username" class="font-bold text-gray-800 leading-none">Nama Pengguna</h3></div>
                 </div>
-                <button onclick="toggleNotifications()" class="p-2 hover:bg-gray-100 rounded-full relative transition"><i data-lucide="bell" class="w-6 h-6 text-gray-600"></i><span id="notif-badge" class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white animate-pulse hidden"></span></button>
+                <!-- TOMBOL LONCENG -->
+                <button onclick="toggleNotifications()" class="p-2 hover:bg-gray-100 rounded-full relative transition">
+                    <i data-lucide="bell" class="w-6 h-6 text-gray-600"></i>
+                    <span id="notif-badge" class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white animate-pulse hidden"></span>
+                </button>
             </header>
 
             <main id="page-content" class="flex-1 overflow-y-auto p-4 pb-32 no-scrollbar"></main>
@@ -101,7 +122,25 @@
                 <button onclick="switchTab('profile')" class="nav-btn text-gray-400" data-target="profile"><i data-lucide="user-cog" class="w-6 h-6"></i><span class="text-[10px] font-bold">Profil</span></button>
             </nav>
 
-            <!-- MODALS & OVERLAYS -->
+            <!-- MODALS -->
+            
+            <!-- NOTIFIKASI MODAL (FIXED) -->
+            <div id="notif-modal" class="absolute inset-0 bg-black/50 z-50 hidden flex items-end transition-opacity duration-300">
+                <div class="bg-white w-full rounded-t-2xl max-h-[70vh] overflow-y-auto animate-slide-up flex flex-col">
+                    <div class="p-4 border-b flex justify-between items-center sticky top-0 bg-white z-10">
+                        <h3 class="font-bold text-lg text-gray-800">Notifikasi</h3>
+                        <button onclick="toggleNotifications()" class="p-1 rounded-full hover:bg-gray-100"><i data-lucide="x" class="w-5 h-5 text-gray-500"></i></button>
+                    </div>
+                    <div id="notif-list" class="p-4 space-y-3 pb-10 flex-1">
+                        <!-- Item notifikasi akan muncul di sini -->
+                    </div>
+                    <div class="p-4 border-t text-center sticky bottom-0 bg-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+                        <button onclick="markAllRead()" class="text-xs font-bold text-indigo-600 uppercase tracking-wide">Tandai Semua Dibaca</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Action Modal -->
             <div id="quick-action-modal" class="absolute inset-0 bg-black/60 z-50 hidden flex items-end transition-opacity duration-300">
                 <div class="bg-white w-full rounded-t-3xl animate-slide-up shadow-2xl p-6 pb-8">
                     <div class="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-6"></div>
@@ -115,60 +154,32 @@
                 </div>
             </div>
 
-            <div id="scanner-overlay" class="absolute inset-0 bg-black z-[60] hidden flex flex-col items-center justify-center text-white">
-                <div class="absolute top-6 right-6"><button onclick="closeScanner()" class="p-2 bg-white/20 rounded-full"><i data-lucide="x" class="w-6 h-6"></i></button></div>
-                <h3 id="scanner-title" class="text-lg font-bold mb-8">Pindai QR Code</h3>
-                <div class="w-64 h-64 border-4 border-white/30 rounded-3xl relative overflow-hidden"><div class="absolute inset-0 border-2 border-white/80 rounded-3xl"></div><div class="scanning-beam"></div><div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=300&auto=format&fit=crop')] bg-cover opacity-30"></div></div>
-                <p class="mt-6 text-sm text-gray-300 text-center px-10">Arahkan kamera ke QR Code pada Loket.</p>
-            </div>
-
-            <div id="service-detail-modal" class="absolute inset-0 bg-black/60 z-[55] hidden flex items-end transition-opacity duration-300">
-                <div class="bg-white w-full rounded-t-3xl animate-slide-up shadow-2xl h-[70vh] flex flex-col relative">
-                    <div class="h-24 w-full bg-indigo-600 rounded-t-3xl relative overflow-hidden"><div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div><button onclick="closeServiceDetail()" class="absolute top-4 right-4 bg-white/20 p-2 rounded-full text-white hover:bg-white/30"><i data-lucide="x" class="w-5 h-5"></i></button></div>
-                    <div class="absolute top-12 left-1/2 transform -translate-x-1/2"><div id="detail-icon-container" class="w-20 h-20 bg-white rounded-full shadow-lg flex items-center justify-center text-indigo-600 border-4 border-white"></div></div>
-                    <div class="pt-12 px-6 pb-6 flex-1 overflow-y-auto"><div class="text-center mb-6"><h3 id="detail-title" class="text-xl font-bold text-gray-800 mb-1"></h3><span id="detail-time" class="inline-block bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full"></span></div><div class="space-y-4"><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><h4 class="font-bold text-gray-700 text-sm mb-2 flex items-center gap-2"><i data-lucide="info" class="w-4 h-4 text-indigo-500"></i> Deskripsi</h4><p id="detail-desc" class="text-sm text-gray-600 leading-relaxed"></p></div><div><h4 class="font-bold text-gray-700 text-sm mb-2 flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4 text-indigo-500"></i> Persyaratan</h4><ul id="detail-reqs" class="space-y-2"></ul></div></div></div>
-                    <div class="p-4 border-t border-gray-100 bg-white pb-8"><button id="detail-submit-btn" class="w-full bg-indigo-600 text-white font-bold py-3.5 rounded-xl shadow-lg hover:bg-indigo-700 active:scale-95 transition flex items-center justify-center gap-2"><span>Ajukan Sekarang</span><i data-lucide="arrow-right" class="w-5 h-5"></i></button></div>
-                </div>
-            </div>
-
-            <div id="service-modal" class="absolute inset-0 bg-black/60 z-[55] hidden flex items-end transition-opacity duration-300">
-                <div class="bg-white w-full rounded-t-3xl animate-slide-up shadow-2xl p-6 pb-8 h-[80vh] flex flex-col"><div class="flex justify-between items-center mb-4"><h3 class="font-bold text-lg text-gray-800">Pilih Layanan</h3><button onclick="closeServiceModal()" class="p-2 bg-gray-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button></div><div class="overflow-y-auto space-y-3 flex-1 pr-1" id="service-list-container"></div></div>
-            </div>
-
-            <div id="notif-modal" class="absolute inset-0 bg-black/50 z-50 hidden flex items-end transition-opacity duration-300">
-                <div class="bg-white w-full rounded-t-2xl max-h-[70vh] overflow-y-auto animate-slide-up"><div class="p-4 border-b flex justify-between items-center sticky top-0 bg-white z-10"><h3 class="font-bold">Notifikasi</h3><button onclick="toggleNotifications()"><i data-lucide="x" class="w-5 h-5"></i></button></div><div id="notif-list" class="p-4 space-y-3 pb-10"></div><div class="p-4 border-t text-center"><button onclick="markAllRead()" class="text-xs font-bold text-indigo-600">Tandai Semua Dibaca</button></div></div>
-            </div>
-
-            <div id="schedule-modal" class="absolute inset-0 bg-black/50 z-50 hidden flex items-center justify-center px-4">
-                <div class="bg-white w-full max-w-sm rounded-2xl animate-slide-up overflow-hidden"><div class="bg-indigo-600 p-4 text-white text-center"><h3 class="font-bold">Pilih Jadwal</h3><p class="text-xs">Perekaman Biometrik</p></div><div class="p-5 space-y-4"><div><label class="text-xs font-bold text-gray-600">Lokasi</label><select id="sched-loc" class="w-full p-3 bg-gray-50 border rounded-lg text-sm"><option>Kantor Dinas Pusat</option><option>Kecamatan Sukarame</option></select></div><div class="grid grid-cols-2 gap-3"><div><label class="text-xs font-bold">Tanggal</label><input type="date" id="sched-date" class="w-full p-3 bg-gray-50 border rounded-lg text-sm"></div><div><label class="text-xs font-bold">Waktu</label><select id="sched-time" class="w-full p-3 bg-gray-50 border rounded-lg text-sm"><option>08:00-09:00</option><option>09:00-10:00</option></select></div></div><button onclick="submitSchedule()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl">KONFIRMASI</button><button onclick="closeScheduleModal()" class="w-full text-gray-500 text-xs py-2">Batal</button></div></div>
-            </div>
+            <!-- Scanner & Service Modals -->
+            <div id="scanner-overlay" class="absolute inset-0 bg-black z-[60] hidden flex flex-col items-center justify-center text-white"><div class="absolute top-6 right-6"><button onclick="closeScanner()" class="p-2 bg-white/20 rounded-full"><i data-lucide="x" class="w-6 h-6"></i></button></div><h3 id="scanner-title" class="text-lg font-bold mb-8">Pindai QR Code</h3><div class="w-64 h-64 border-4 border-white/30 rounded-3xl relative overflow-hidden"><div class="absolute inset-0 border-2 border-white/80 rounded-3xl"></div><div class="scanning-beam"></div><div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=300&auto=format&fit=crop')] bg-cover opacity-30"></div></div><p class="mt-6 text-sm text-gray-300 text-center px-10">Arahkan kamera ke QR Code pada Loket.</p></div>
+            <div id="service-modal" class="absolute inset-0 bg-black/60 z-[55] hidden flex items-end transition-opacity duration-300"><div class="bg-white w-full rounded-t-3xl animate-slide-up shadow-2xl p-6 pb-8 h-[80vh] flex flex-col"><div class="flex justify-between items-center mb-4"><h3 class="font-bold text-lg text-gray-800">Pilih Layanan</h3><button onclick="closeServiceModal()" class="p-2 bg-gray-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button></div><div class="overflow-y-auto space-y-3 flex-1 pr-1" id="service-list-container"></div></div></div>
+            <div id="service-detail-modal" class="absolute inset-0 bg-black/60 z-[55] hidden flex items-end transition-opacity duration-300"><div class="bg-white w-full rounded-t-3xl animate-slide-up shadow-2xl h-[70vh] flex flex-col relative"><div class="h-24 w-full bg-indigo-600 rounded-t-3xl relative overflow-hidden"><div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div><button onclick="closeServiceDetail()" class="absolute top-4 right-4 bg-white/20 p-2 rounded-full text-white hover:bg-white/30"><i data-lucide="x" class="w-5 h-5"></i></button></div><div class="absolute top-12 left-1/2 transform -translate-x-1/2"><div id="detail-icon-container" class="w-20 h-20 bg-white rounded-full shadow-lg flex items-center justify-center text-indigo-600 border-4 border-white"></div></div><div class="pt-12 px-6 pb-6 flex-1 overflow-y-auto"><div class="text-center mb-6"><h3 id="detail-title" class="text-xl font-bold text-gray-800 mb-1"></h3><span id="detail-time" class="inline-block bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full"></span></div><div class="space-y-4"><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><h4 class="font-bold text-gray-700 text-sm mb-2 flex items-center gap-2"><i data-lucide="info" class="w-4 h-4 text-indigo-500"></i> Deskripsi</h4><p id="detail-desc" class="text-sm text-gray-600 leading-relaxed"></p></div><div><h4 class="font-bold text-gray-700 text-sm mb-2 flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4 text-indigo-500"></i> Persyaratan</h4><ul id="detail-reqs" class="space-y-2"></ul></div></div></div><div class="p-4 border-t border-gray-100 bg-white pb-8"><button id="detail-submit-btn" class="w-full bg-indigo-600 text-white font-bold py-3.5 rounded-xl shadow-lg hover:bg-indigo-700 active:scale-95 transition flex items-center justify-center gap-2"><span>Ajukan Sekarang</span><i data-lucide="arrow-right" class="w-5 h-5"></i></button></div></div></div>
+            <div id="schedule-modal" class="absolute inset-0 bg-black/50 z-50 hidden flex items-center justify-center px-4"><div class="bg-white w-full max-w-sm rounded-2xl animate-slide-up overflow-hidden"><div class="bg-indigo-600 p-4 text-white text-center"><h3 class="font-bold">Pilih Jadwal</h3><p class="text-xs">Perekaman Biometrik</p></div><div class="p-5 space-y-4"><div><label class="text-xs font-bold text-gray-600">Lokasi</label><select id="sched-loc" class="w-full p-3 bg-gray-50 border rounded-lg text-sm"><option>Kantor Dinas Pusat</option><option>Kecamatan Sukarame</option></select></div><div class="grid grid-cols-2 gap-3"><div><label class="text-xs font-bold">Tanggal</label><input type="date" id="sched-date" class="w-full p-3 bg-gray-50 border rounded-lg text-sm"></div><div><label class="text-xs font-bold">Waktu</label><select id="sched-time" class="w-full p-3 bg-gray-50 border rounded-lg text-sm"><option>08:00-09:00</option><option>09:00-10:00</option></select></div></div><button onclick="submitSchedule()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl">KONFIRMASI</button><button onclick="closeScheduleModal()" class="w-full text-gray-500 text-xs py-2">Batal</button></div></div></div>
         </div>
     </div>
 
     <script>
-        const serviceDetailsInfo = {
-            'ktp': { title: "Pembuatan E-KTP", desc: "Layanan penerbitan KTP Elektronik baru.", time: "3-5 Hari Kerja", reqs: ["Berusia min 17 th", "Fotokopi KK", "Surat Ket. Hilang (jika hilang)"] },
-            'kk': { title: "Kartu Keluarga (KK)", desc: "Penerbitan KK baru/perubahan data.", time: "1-2 Hari Kerja", reqs: ["Formulir F-1.01", "Buku Nikah", "KK asli"] },
-            'pindah': { title: "Surat Pindah (SKPWNI)", desc: "Dokumen pindah domisili.", time: "1 Hari Kerja", reqs: ["KK asli", "E-KTP Pemohon", "Alamat Tujuan"] },
-            'akta': { title: "Akta Kelahiran", desc: "Pencatatan kelahiran penduduk.", time: "2-3 Hari Kerja", reqs: ["Ket. Lahir", "Buku Nikah Ortu", "KK & KTP Ortu"] },
-            'mati': { title: "Akta Kematian", desc: "Pencatatan kematian.", time: "1-2 Hari Kerja", reqs: ["Ket. Kematian", "KK & KTP Jenazah", "KTP Pelapor"] }
-        };
-
+        const serviceDetailsInfo = { 'ktp': { title: "Pembuatan E-KTP", desc: "Layanan penerbitan KTP Elektronik baru.", time: "3-5 Hari Kerja", reqs: ["Berusia min 17 th", "Fotokopi KK", "Surat Ket. Hilang (jika hilang)"] }, 'kk': { title: "Kartu Keluarga (KK)", desc: "Penerbitan KK baru/perubahan data.", time: "1-2 Hari Kerja", reqs: ["Formulir F-1.01", "Buku Nikah", "KK asli"] }, 'pindah': { title: "Surat Pindah (SKPWNI)", desc: "Dokumen pindah domisili.", time: "1 Hari Kerja", reqs: ["KK asli", "E-KTP Pemohon", "Alamat Tujuan"] }, 'akta': { title: "Akta Kelahiran", desc: "Pencatatan kelahiran penduduk.", time: "2-3 Hari Kerja", reqs: ["Ket. Lahir", "Buku Nikah Ortu", "KK & KTP Ortu"] }, 'mati': { title: "Akta Kematian", desc: "Pencatatan kematian.", time: "1-2 Hari Kerja", reqs: ["Ket. Kematian", "KK & KTP Jenazah", "KTP Pelapor"] } };
+        
         const mockDB = {
             users: [{ nik: "1234567890123456", password: "admin123", name: "SEFTI INDRIYANI", phone: "08123456789", address: "Jl. Mawar No. 10, Bandar Lampung" }],
             tracking: [{ id: "REG-20241025-001", userId: "1234567890123456", service: "Pembuatan E-KTP Baru", status: "MENUNGGU_JADWAL", updatedAt: "2024-10-25 09:00", history: [{ step: "Pengajuan Masuk", date: "2024-10-20", done: true }, { step: "Verifikasi Dokumen", date: "2024-10-21", done: true }, { step: "Perekaman Biometrik", date: "Menunggu Jadwal", done: false }, { step: "Antrian Pencetakan", date: "-", done: false }, { step: "Selesai / Diambil", date: "-", done: false }] }],
-            services: [
-                { id: 'ktp', name: "Buat E-KTP", icon: "id-card", bg: "bg-blue-100", color: "text-blue-600" },
-                { id: 'kk', name: "Kartu Keluarga", icon: "users", bg: "bg-green-100", color: "text-green-600" },
-                { id: 'pindah', name: "Surat Pindah", icon: "truck", bg: "bg-orange-100", color: "text-orange-600" },
-                { id: 'akta', name: "Akta Lahir", icon: "baby", bg: "bg-pink-100", color: "text-pink-600" },
-                { id: 'mati', name: "Akta Kematian", icon: "file-minus", bg: "bg-gray-200", color: "text-gray-600" },
-            ],
-            notifications: [{ id: 1, title: "Pengajuan Ditolak", message: "Mohon maaf, pengajuan ditolak.", time: "2 jam yang lalu", type: "error", read: false }, { id: 2, title: "Pembaruan Aplikasi", message: "Versi baru tersedia!", time: "5 jam yang lalu", type: "update", read: false }, { id: 3, title: "Selamat Datang", message: "Selamat datang di C-A-K-A-P.", time: "2 hari yang lalu", type: "info", read: true }]
+            services: [{ id: 'ktp', name: "Buat E-KTP", icon: "id-card", bg: "bg-blue-100", color: "text-blue-600" }, { id: 'kk', name: "Kartu Keluarga", icon: "users", bg: "bg-green-100", color: "text-green-600" }, { id: 'pindah', name: "Surat Pindah", icon: "truck", bg: "bg-orange-100", color: "text-orange-600" }, { id: 'akta', name: "Akta Lahir", icon: "baby", bg: "bg-pink-100", color: "text-pink-600" }, { id: 'mati', name: "Akta Kematian", icon: "file-minus", bg: "bg-gray-200", color: "text-gray-600" }],
+            notifications: [
+                { id: 0, title: "Terkirim ke WhatsApp", message: "Salinan tiket antrian dan status pengajuan (REG-20241025-001) telah berhasil dikirim ke WhatsApp Anda.", time: "Baru saja", type: "wa", read: false },
+                { id: 1, title: "Pengajuan Ditolak", message: "Mohon maaf, pengajuan ditolak.", time: "2 jam yang lalu", type: "error", read: false },
+                { id: 2, title: "Pembaruan Aplikasi", message: "Versi baru tersedia!", time: "5 jam yang lalu", type: "update", read: false },
+                { id: 3, title: "Selamat Datang", message: "Selamat datang di C-A-K-A-P.", time: "2 hari yang lalu", type: "info", read: true }
+            ]
         };
 
         let currentUser = null; let activeTab = 'home'; let currentRegIdForSchedule = null; let isCardFlipped = false;
 
+        // --- FUNGSI UTAMA ---
         function showToast(msg, type = 'info') {
             const toast = document.createElement('div');
             let bgClass = type === 'success' ? 'bg-green-600' : type === 'wa' ? 'bg-[#25D366]' : 'bg-gray-800';
@@ -179,81 +190,111 @@
             setTimeout(() => { toast.style.opacity='0'; toast.style.transform='translateY(-20px)'; setTimeout(() => toast.remove(), 300); }, 4000);
         }
 
+        function toggleNotifications() {
+            const modal = document.getElementById('notif-modal');
+            const list = document.getElementById('notif-list');
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                // FORCE RENDER LIST
+                list.innerHTML = '';
+                if (mockDB.notifications.length === 0) {
+                    list.innerHTML = '<p class="text-center text-gray-500 text-sm mt-10">Tidak ada notifikasi.</p>';
+                } else {
+                    mockDB.notifications.forEach(n => {
+                        let icon='info', bg='bg-blue-100 text-blue-600';
+                        if(n.type==='error') { icon='x-circle'; bg='bg-red-100 text-red-600'; }
+                        else if(n.type==='success') { icon='check-circle'; bg='bg-green-100 text-green-600'; }
+                        else if(n.type==='wa') { icon='message-circle'; bg='bg-[#DCF8C6] text-[#075E54]'; }
+                        else if(n.type==='update') { icon='refresh-cw'; bg='bg-purple-100 text-purple-600'; }
+                        
+                        list.innerHTML += `
+                        <div class="flex gap-3 p-3 rounded-lg ${n.read ? 'opacity-60 bg-gray-50' : 'bg-white border border-gray-200 shadow-sm'} transition-all">
+                            <div class="flex-shrink-0 w-10 h-10 ${bg} rounded-full flex items-center justify-center"><i data-lucide="${icon}" class="w-5 h-5"></i></div>
+                            <div class="flex-1"><div class="flex justify-between items-start"><h4 class="text-sm font-bold text-gray-800">${n.title}</h4><span class="text-[10px] text-gray-400 whitespace-nowrap ml-2">${n.time}</span></div><p class="text-xs text-gray-600 mt-1 leading-relaxed">${n.message}</p></div>
+                        </div>`;
+                    });
+                }
+                lucide.createIcons();
+            } else { modal.classList.add('hidden'); }
+        }
+
+        // --- INIT ---
         window.onload = () => {
             lucide.createIcons();
-            // Populate Service Modal
             const svcList = document.getElementById('service-list-container');
-            if(svcList) {
-                svcList.innerHTML = mockDB.services.map(s => `<div onclick="openServiceDetail('${s.id}')" class="flex items-center p-4 border border-gray-200 rounded-xl hover:bg-gray-50 transition cursor-pointer"><div class="w-10 h-10 ${s.bg} ${s.color} rounded-full flex items-center justify-center mr-3"><i data-lucide="${s.icon}" class="w-5 h-5"></i></div><div><h4 class="font-bold text-sm text-gray-800">${s.name}</h4><p class="text-xs text-gray-500">Ketuk untuk detail</p></div></div>`).join('');
-            }
+            if(svcList) svcList.innerHTML = mockDB.services.map(s => `<div onclick="openServiceDetail('${s.id}')" class="flex items-center p-4 border border-gray-200 rounded-xl hover:bg-gray-50 transition cursor-pointer"><div class="w-10 h-10 ${s.bg} ${s.color} rounded-full flex items-center justify-center mr-3"><i data-lucide="${s.icon}" class="w-5 h-5"></i></div><div><h4 class="font-bold text-sm text-gray-800">${s.name}</h4><p class="text-xs text-gray-500">Ketuk untuk detail</p></div></div>`).join('');
             setTimeout(() => { document.getElementById('splash-screen').classList.add('opacity-0'); setTimeout(() => { document.getElementById('splash-screen').style.display='none'; document.getElementById('auth-screen').classList.remove('hidden'); }, 500); }, 2000);
         };
 
+        // --- CORE FUNCTIONS (Login, Tabs, etc) ---
         function handleLogin() {
             const user = mockDB.users.find(u => u.nik === document.getElementById('login-nik').value && u.password === document.getElementById('login-pass').value);
             if (user) { currentUser = user; document.getElementById('auth-screen').classList.add('hidden'); document.getElementById('main-content').classList.remove('hidden'); document.getElementById('header-username').textContent = user.name; updateNotifBadge(); renderPage('home'); setTimeout(() => showToast(`Login Berhasil. Halo, ${user.name}!`, 'success'), 500); } 
             else { showToast("Gunakan NIK: 1234567890123456 dan Pass: admin123", 'info'); }
         }
-
         function switchTab(tab) { activeTab = tab; document.querySelectorAll('.nav-btn').forEach(btn => btn.className = btn.dataset.target === tab ? 'nav-btn text-indigo-600 flex flex-col items-center' : 'nav-btn text-gray-400 flex flex-col items-center'); renderPage(tab); }
-        function toggleQuickAction() { document.getElementById('quick-action-modal').classList.toggle('hidden'); }
-        function toggleNotifications() { document.getElementById('notif-modal').classList.toggle('hidden'); }
-        function closeScanner() { document.getElementById('scanner-overlay').classList.add('hidden'); }
-        function closeServiceDetail() { document.getElementById('service-detail-modal').classList.add('hidden'); }
-        function openServiceModal() { toggleQuickAction(); document.getElementById('service-modal').classList.remove('hidden'); }
-        function closeServiceModal() { document.getElementById('service-modal').classList.add('hidden'); }
-        function closeScheduleModal() { document.getElementById('schedule-modal').classList.add('hidden'); }
-        function openScheduleModal(id) { currentRegIdForSchedule=id; document.getElementById('schedule-modal').classList.remove('hidden'); }
         function updateNotifBadge() { document.getElementById('notif-badge').classList.toggle('hidden', mockDB.notifications.filter(n => !n.read).length === 0); }
         function markAllRead() { mockDB.notifications.forEach(n => n.read = true); updateNotifBadge(); toggleNotifications(); }
+        function toggleQuickAction() { document.getElementById('quick-action-modal').classList.toggle('hidden'); }
+        function closeScanner() { document.getElementById('scanner-overlay').classList.add('hidden'); }
+        function closeServiceDetail() { document.getElementById('service-detail-modal').classList.add('hidden'); }
+        function closeServiceModal() { document.getElementById('service-modal').classList.add('hidden'); }
+        function closeScheduleModal() { document.getElementById('schedule-modal').classList.add('hidden'); }
         
+        // --- LOGIC FEATURES ---
         function startScan(type) {
             toggleQuickAction(); document.getElementById('scanner-overlay').classList.remove('hidden');
             document.getElementById('scanner-title').textContent = type === 'verify' ? "Scan QR Petugas" : "Scan QR Antrian";
-            setTimeout(() => { document.getElementById('scanner-overlay').classList.add('hidden'); showToast(type==='queue' ? 'Antrian Berhasil' : 'Data Dibagikan', 'success'); }, 2000);
+            setTimeout(() => { 
+                document.getElementById('scanner-overlay').classList.add('hidden'); 
+                if(type === 'queue') {
+                    showToast('Antrian Berhasil', 'success');
+                    mockDB.notifications.unshift({ id: Date.now(), title: "Antrian Digital", message: "Nomor antrian A-12 terdaftar.", time: "Baru saja", type: "info", read: false });
+                    updateNotifBadge();
+                } else { showToast('Data Dibagikan', 'success'); }
+            }, 2000);
         }
 
         function openServiceDetail(id) {
             const info = serviceDetailsInfo[id]; if (!info) return;
-            document.getElementById('detail-title').textContent = info.title;
-            document.getElementById('detail-desc').textContent = info.desc;
-            document.getElementById('detail-time').textContent = info.time;
-            const s = mockDB.services.find(s => s.id === id);
-            document.getElementById('detail-icon-container').innerHTML = `<i data-lucide="${s.icon}" class="w-10 h-10"></i>`;
+            document.getElementById('detail-title').textContent = info.title; document.getElementById('detail-desc').textContent = info.desc; document.getElementById('detail-time').textContent = info.time;
+            const s = mockDB.services.find(s => s.id === id); document.getElementById('detail-icon-container').innerHTML = `<i data-lucide="${s.icon}" class="w-10 h-10"></i>`;
             document.getElementById('detail-reqs').innerHTML = info.reqs.map(r => `<li class="flex gap-2 text-sm text-gray-600"><span class="mt-1.5 w-1.5 h-1.5 bg-indigo-500 rounded-full flex-shrink-0"></span>${r}</li>`).join('');
             document.getElementById('detail-submit-btn').onclick = () => { closeServiceDetail(); submitServiceRequest(id); };
-            document.getElementById('service-detail-modal').classList.remove('hidden');
-            lucide.createIcons();
+            document.getElementById('service-detail-modal').classList.remove('hidden'); lucide.createIcons();
         }
 
         function submitServiceRequest(type) {
-            closeServiceModal();
+            document.getElementById('service-detail-modal').classList.add('hidden'); document.getElementById('service-modal').classList.add('hidden');
             const id = "REG-" + Math.floor(Math.random()*10000);
-            mockDB.tracking.unshift({ id: id, service: serviceDetailsInfo[type].title, status: type==='ektp'?'MENUNGGU_JADWAL':'VERIFIKASI', history: [{step:"Pengajuan", date:"Hari ini", done:true}, {step:"Verifikasi", date:"Baru saja", done:true}, {step:type==='ektp'?"Biometrik":"Proses", date:type==='ektp'?"Menunggu Jadwal":"-", done:false}, {step:"Selesai", date:"-", done:false}] });
-            showToast('Pengajuan Berhasil', 'success'); renderPage('tracking');
+            mockDB.tracking.unshift({ id: id, service: serviceDetailsInfo[type].title, status: 'VERIFIKASI', history: [{step:"Pengajuan", date:"Hari ini", done:true}, {step:"Verifikasi", date:"Baru saja", done:true}, {step:"Proses", date:"-", done:false}, {step:"Selesai", date:"-", done:false}] });
+            
+            // WA NOTIF LOGIC
+            mockDB.notifications.unshift({ id: Date.now(), title: "Pengajuan Berhasil", message: `Layanan ${serviceDetailsInfo[type].title} berhasil.`, time: "Baru saja", type: "success", read: false });
+            mockDB.notifications.unshift({ id: Date.now()+1, title: "Terkirim ke WhatsApp", message: `Notifikasi WA terkirim ke ${currentUser.phone}`, time: "Baru saja", type: "wa", read: false });
+            
+            updateNotifBadge(); showToast('Pengajuan Berhasil', 'success'); 
+            setTimeout(() => showToast(`WA Masuk: Update ${id}`, 'wa'), 1500);
+            renderPage('tracking');
         }
 
+        function openServiceModal() { toggleQuickAction(); document.getElementById('service-modal').classList.remove('hidden'); }
+        function simulateNewRequest() { openServiceModal(); }
+        function openScheduleModal(id) { currentRegIdForSchedule=id; document.getElementById('schedule-modal').classList.remove('hidden'); }
         function submitSchedule() {
             const t = mockDB.tracking.find(tr => tr.id === currentRegIdForSchedule);
             if(t) { t.status='BIOMETRIK_TERJADWAL'; t.history[2].done=true; t.history[2].step=`Jadwal: ${document.getElementById('sched-date').value}`; t.ticket={code:'Q-123', loc:document.getElementById('sched-loc').value, date:document.getElementById('sched-date').value, time:document.getElementById('sched-time').value}; }
             closeScheduleModal(); showToast('Jadwal Tersimpan', 'success'); renderPage('tracking');
         }
+        function toggleFlipCard() { isCardFlipped = !isCardFlipped; const cardInner = document.getElementById('ktp-inner'); if(isCardFlipped) cardInner.classList.add('rotate-y-180'); else cardInner.classList.remove('rotate-y-180'); }
 
-        function toggleFlipCard() {
-            isCardFlipped = !isCardFlipped;
-            const cardInner = document.getElementById('ktp-inner');
-            if(isCardFlipped) cardInner.classList.add('rotate-y-180'); else cardInner.classList.remove('rotate-y-180');
-        }
-
+        // --- RENDER PAGE ---
         function renderPage(page) {
-            const container = document.getElementById('page-content');
-            container.innerHTML = ''; window.scrollTo(0,0);
-
+            const container = document.getElementById('page-content'); container.innerHTML = ''; window.scrollTo(0,0);
             if (page === 'home') {
                 const t = mockDB.tracking[0];
                 let statusHTML = t ? `<div class="bg-white p-4 rounded-2xl shadow-md border border-gray-100 mb-6 animate-fade-in"><div class="flex justify-between items-start mb-2"><div><h4 class="font-bold text-gray-800 text-sm">Status Terkini</h4><p class="text-xs text-gray-500">${t.service}</p></div>${t.status==='MENUNGGU_JADWAL'?'<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-[10px] font-bold animate-pulse">BUTUH AKSI</span>':'<span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-[10px] font-bold">PROSES</span>'}</div><div class="w-full bg-gray-200 rounded-full h-2 mb-2"><div class="bg-indigo-600 h-2 rounded-full" style="width: ${t.status==='MENUNGGU_JADWAL'?40:20}%"></div></div>${t.status==='MENUNGGU_JADWAL'?`<button onclick="switchTab('tracking')" class="w-full bg-red-600 text-white text-xs font-bold py-2.5 rounded-lg hover:bg-red-700 shadow-lg animate-bounce">📅 Atur Jadwal Sekarang</button>`:`<button onclick="switchTab('tracking')" class="w-full text-indigo-600 text-xs font-bold border border-indigo-100 py-2 rounded-lg hover:bg-indigo-50">Lihat Detail</button>`}</div>` : `<div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-6 text-center mb-6 animate-fade-in"><div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 text-indigo-600 shadow-sm"><i data-lucide="file-plus" class="w-6 h-6"></i></div><h4 class="font-bold text-gray-800 mb-1">Belum Ada Pengajuan</h4><p class="text-xs text-gray-500 mb-4">Mulai layanan adminduk Anda.</p><button onclick="toggleQuickAction()" class="bg-indigo-600 text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-lg hover:bg-indigo-700 transform active:scale-95 transition">+ Buat Pengajuan Baru</button></div>`;
                 container.innerHTML = `<div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl p-4 text-white mb-6 shadow-lg animate-fade-in"><p class="text-xs opacity-80 font-semibold mb-1">VISI C-A-K-A-P</p><h2 class="font-bold text-lg leading-tight">Layanan Adminduk yang Proaktif & Digital</h2></div>${statusHTML}<h3 class="font-bold text-gray-800 mb-3">Layanan Digital</h3><div class="grid grid-cols-3 gap-3 mb-20">${mockDB.services.map(s => `<div class="flex flex-col items-center p-3 bg-white rounded-xl shadow-sm border border-gray-100 active:scale-95 transition cursor-pointer" onclick="openServiceDetail('${s.id}')"><div class="w-10 h-10 ${s.bg} rounded-full flex items-center justify-center mb-2"><i data-lucide="${s.icon}" class="w-5 h-5 ${s.color}"></i></div><span class="text-[10px] font-bold text-gray-700 text-center">${s.name}</span></div>`).join('')}</div>`;
-            
             } else if (page === 'tracking') {
                 const t = mockDB.tracking[0];
                 if (!t) { container.innerHTML = `<div class="text-center py-20 text-gray-400"><i data-lucide="search" class="w-12 h-12 mx-auto mb-2"></i><p>Belum ada data.</p></div>`; } 
@@ -267,28 +308,9 @@
                     }).join('');
                     container.innerHTML = `<div class="bg-white p-5 rounded-2xl shadow-sm mb-24"><div class="flex justify-between items-center mb-6"><h2 class="font-bold text-lg text-indigo-600">Detail Pelacakan</h2><span class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full text-xs font-mono font-bold tracking-wide">${t.id}</span></div>${ticketHTML}<div>${stepsHTML}</div></div>`;
                 }
-
             } else if (page === 'ikd') {
                 isCardFlipped = false;
-                container.innerHTML = `
-                    <div class="flex justify-between items-center mb-4"><h2 class="font-bold text-lg text-indigo-600">KTP Digital (IKD)</h2><span class="bg-green-100 text-green-600 px-2 py-1 rounded text-[10px] font-bold border border-green-200 animate-pulse">AKTIF</span></div>
-                    <div class="relative w-full aspect-[1.58/1] perspective-1000 mb-6">
-                        <div id="ktp-inner" class="relative w-full h-full transform-style-3d transition-transform duration-700">
-                            <!-- FRONT -->
-                            <div class="absolute inset-0 w-full h-full backface-hidden rounded-2xl shadow-2xl overflow-hidden text-white clean-card p-4 flex flex-col">
-                                <div class="flex justify-between items-start mb-4 relative z-10"><div class="flex items-center gap-3"><img src="https://raw.githubusercontent.com/bagusdewidn-blip/Tugas-Kuliah/refs/heads/main/Garuda_Pancasila%2C_Coat_of_Arms_of_Indonesia.svg.png" class="w-8 drop-shadow-md"><div class="text-left"><h2 class="font-bold text-sm tracking-widest leading-tight text-shadow-sm">REPUBLIK INDONESIA</h2><p class="text-[10px] tracking-widest opacity-90 font-medium">KTP DIGITAL</p></div></div><div class="border border-white/50 rounded px-2 py-0.5 text-[9px] font-bold backdrop-blur-sm">IKD AKTIF</div></div>
-                                <div class="flex gap-4 items-center flex-1 relative z-10 px-1"><div class="w-20 aspect-[3/4] bg-gray-300/40 rounded-lg border-2 border-white/30 flex items-center justify-center backdrop-blur-sm shadow-inner overflow-hidden"><img src="https://raw.githubusercontent.com/bagusdewidn-blip/Tugas-Kuliah/refs/heads/main/b11a648d6aa44adb9c1dbb39bf9a8490.png" class="w-full h-full object-cover object-top" alt="Foto IKD"></div><div class="flex-1 min-w-0 space-y-1"><h3 class="font-bold text-lg leading-none truncate drop-shadow-md uppercase">${currentUser.name}</h3><p class="font-mono text-xs opacity-90 tracking-wide">${currentUser.nik}</p><p class="text-[9px] leading-tight opacity-80 truncate">${currentUser.address}</p></div></div>
-                                <div class="flex justify-between items-end mt-1 relative z-10"><p class="text-[8px] font-medium opacity-70">Berlaku Seumur Hidup</p><i data-lucide="refresh-cw" class="w-4 h-4 text-white/50 animate-pulse"></i></div>
-                            </div>
-                            <!-- BACK -->
-                            <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-2xl shadow-2xl overflow-hidden text-white clean-card p-4 flex flex-col items-center justify-center text-center">
-                                <h3 class="font-bold text-white text-sm mb-2">Kode Verifikasi Digital</h3><div class="bg-white p-1.5 rounded-xl shadow-lg"><i data-lucide="qr-code" class="w-20 h-20 text-gray-800"></i></div><p class="text-[9px] text-white/90 mt-2 px-4 leading-tight">Pindai kode ini untuk memverifikasi keaslian dokumen.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-6 flex gap-3 justify-center"><button onclick="toggleFlipCard()" class="flex items-center gap-2 bg-white text-indigo-600 border border-indigo-100 px-5 py-2.5 rounded-full text-sm font-bold shadow hover:bg-indigo-50 transition active:scale-95"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Putar Kartu</button><button onclick="showToast('Dokumen berhasil diunduh (PDF)', 'success')" class="flex items-center gap-2 bg-indigo-600 text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-lg hover:bg-indigo-700 transition active:scale-95"><i data-lucide="download" class="w-4 h-4"></i> Unduh KTP</button></div>
-                `;
-
+                container.innerHTML = `<div class="flex justify-between items-center mb-4"><h2 class="font-bold text-lg text-indigo-600">KTP Digital (IKD)</h2><span class="bg-green-100 text-green-600 px-2 py-1 rounded text-[10px] font-bold border border-green-200 animate-pulse">AKTIF</span></div><div class="relative w-full aspect-[1.58/1] perspective-1000 mb-6"><div id="ktp-inner" class="relative w-full h-full transform-style-3d transition-transform duration-700"><!-- FRONT --><div class="absolute inset-0 w-full h-full backface-hidden rounded-2xl shadow-2xl overflow-hidden text-white clean-card p-4 flex flex-col"><div class="flex justify-between items-start mb-4 relative z-10"><div class="flex items-center gap-3"><img src="https://raw.githubusercontent.com/bagusdewidn-blip/Tugas-Kuliah/refs/heads/main/Garuda_Pancasila%2C_Coat_of_Arms_of_Indonesia.svg.png" class="w-8 drop-shadow-md"><div class="text-left"><h2 class="font-bold text-sm tracking-widest leading-tight text-shadow-sm">REPUBLIK INDONESIA</h2><p class="text-[10px] tracking-widest opacity-90 font-medium">KTP DIGITAL</p></div></div><div class="border border-white/50 rounded px-2 py-0.5 text-[9px] font-bold backdrop-blur-sm">IKD AKTIF</div></div><div class="flex gap-4 items-center flex-1 relative z-10 px-1"><div class="w-20 aspect-[3/4] bg-gray-300/40 rounded-lg border-2 border-white/30 flex items-center justify-center backdrop-blur-sm shadow-inner overflow-hidden"><img src="https://raw.githubusercontent.com/bagusdewidn-blip/Tugas-Kuliah/refs/heads/main/b11a648d6aa44adb9c1dbb39bf9a8490.png" class="w-full h-full object-cover object-top" alt="Foto IKD"></div><div class="flex-1 min-w-0 space-y-1"><h3 class="font-bold text-lg leading-none truncate drop-shadow-md uppercase">${currentUser.name}</h3><p class="font-mono text-xs opacity-90 tracking-wide">${currentUser.nik}</p><p class="text-[9px] leading-tight opacity-80 truncate">${currentUser.address}</p></div></div><div class="flex justify-between items-end mt-1 relative z-10"><p class="text-[8px] font-medium opacity-70">Berlaku Seumur Hidup</p><i data-lucide="refresh-cw" class="w-4 h-4 text-white/50 animate-pulse"></i></div></div><!-- BACK --><div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-2xl shadow-2xl overflow-hidden text-white clean-card p-4 flex flex-col items-center justify-center text-center"><h3 class="font-bold text-white text-sm mb-2">Kode Verifikasi Digital</h3><div class="bg-white p-1.5 rounded-xl shadow-lg"><i data-lucide="qr-code" class="w-20 h-20 text-gray-800"></i></div><p class="text-[9px] text-white/90 mt-2 px-4 leading-tight">Pindai kode ini untuk memverifikasi keaslian dokumen.</p></div></div></div><div class="mt-6 flex gap-3 justify-center"><button onclick="toggleFlipCard()" class="flex items-center gap-2 bg-white text-indigo-600 border border-indigo-100 px-5 py-2.5 rounded-full text-sm font-bold shadow hover:bg-indigo-50 transition active:scale-95"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Putar Kartu</button><button onclick="showToast('Dokumen berhasil diunduh (PDF)', 'success')" class="flex items-center gap-2 bg-indigo-600 text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-lg hover:bg-indigo-700 transition active:scale-95"><i data-lucide="download" class="w-4 h-4"></i> Unduh KTP</button></div>`;
             } else if (page === 'profile') {
                 container.innerHTML = `<div class="bg-white p-6 rounded-2xl shadow-sm text-center mb-6 border border-gray-100"><div class="w-24 h-24 bg-indigo-100 rounded-full mx-auto flex items-center justify-center text-indigo-600 mb-3 overflow-hidden ring-4 ring-indigo-50"><img src="https://raw.githubusercontent.com/bagusdewidn-blip/Tugas-Kuliah/refs/heads/main/b11a648d6aa44adb9c1dbb39bf9a8490.png" class="w-full h-full object-cover object-top"></div><h2 class="font-bold text-xl text-gray-800">${currentUser.name}</h2><p class="text-sm text-gray-500 font-mono mb-2">${currentUser.nik}</p><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">Terverifikasi</span></div><div class="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm mb-6"><button onclick="showToast('Fitur Pengaturan Akun', 'info')" class="w-full p-4 text-left text-sm flex justify-between items-center border-b border-gray-50 hover:bg-gray-50 transition"><div class="flex items-center gap-3"><div class="p-2 bg-gray-100 rounded-lg text-gray-600"><i data-lucide="settings" class="w-4 h-4"></i></div><span class="font-medium text-gray-700">Pengaturan Akun</span></div><i data-lucide="chevron-right" class="w-4 h-4 text-gray-300"></i></button><button onclick="showToast('Bantuan & Layanan Pengguna', 'info')" class="w-full p-4 text-left text-sm flex justify-between items-center border-b border-gray-50 hover:bg-gray-50 transition"><div class="flex items-center gap-3"><div class="p-2 bg-blue-50 rounded-lg text-blue-600"><i data-lucide="help-circle" class="w-4 h-4"></i></div><span class="font-medium text-gray-700">Bantuan & Laporan</span></div><i data-lucide="chevron-right" class="w-4 h-4 text-gray-300"></i></button><button onclick="showToast('Kebijakan Privasi', 'info')" class="w-full p-4 text-left text-sm flex justify-between items-center border-b border-gray-50 hover:bg-gray-50 transition"><div class="flex items-center gap-3"><div class="p-2 bg-green-50 rounded-lg text-green-600"><i data-lucide="shield-check" class="w-4 h-4"></i></div><span class="font-medium text-gray-700">Kebijakan Privasi & Layanan</span></div><i data-lucide="chevron-right" class="w-4 h-4 text-gray-300"></i></button><button onclick="showToast('Tentang Aplikasi C-A-K-A-P', 'info')" class="w-full p-4 text-left text-sm flex justify-between items-center border-b border-gray-50 hover:bg-gray-50 transition"><div class="flex items-center gap-3"><div class="p-2 bg-purple-50 rounded-lg text-purple-600"><i data-lucide="info" class="w-4 h-4"></i></div><span class="font-medium text-gray-700">Tentang Aplikasi</span></div><i data-lucide="chevron-right" class="w-4 h-4 text-gray-300"></i></button></div><div class="text-center mb-8"><button onclick="location.reload()" class="text-red-500 font-bold text-sm flex items-center justify-center gap-2 mx-auto hover:bg-red-50 px-6 py-2 rounded-full transition mb-4"><i data-lucide="log-out" class="w-4 h-4"></i> Keluar Aplikasi</button><p class="text-xs text-gray-400">Versi Aplikasi 1.0.0 (Beta)<br>Build 2024.10.25</p></div>`;
             }
